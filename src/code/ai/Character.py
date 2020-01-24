@@ -1,22 +1,27 @@
-from src.code.ai.behaviour.AgentBehaviour.CollectMoney import CollectMoney
+from src.code.ai.fsm.StateMachine import StateMachine
+from src.code.engine.GameTime import GameTime
 
 
 class Character:
-    def __init__(self, name, stateMachine):
+    def __init__(self, name, state):
         self.name = name
-        self.fatigue = 100
+        self.fatigue = 0
         self.bank = 0
         self.thirst = 0
         self.hunger = 0
-        self.stateMachine = stateMachine
-        self.collectMoney1 = CollectMoney("Bar", "Verandan", 100)
-        self.collectMoney2 = CollectMoney("Student", "LTU", 100)
+        # self.bartenderState = CollectMoney("Bar", "Verandan", 100)
+        # self.studentState = CollectMoney("Student", "LTU", 100)
+        self.stateMachine = StateMachine(self, state)
 
     def update(self):
-        self.stateMachine.currentState.onStateExecution()
+        self.thirst += 2 * GameTime.deltaTime
+        self.hunger += 2 * GameTime.deltaTime
+        self.fatigue += 1 * GameTime.deltaTime
+
+        self.stateMachine.update()
 
     def change(self, state):
-        self.stateMachine.moveNext(state)
+        self.stateMachine.changeState(state)
 
     def revertState(self):
-        self.stateMachine.moveNext(self.stateMachine.previousState)
+        self.stateMachine.revertState()

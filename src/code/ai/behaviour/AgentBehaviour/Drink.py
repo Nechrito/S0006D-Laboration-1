@@ -1,23 +1,24 @@
 from src.code.ai.behaviour.IState import IState
+from src.code.engine.GameTime import GameTime
 
 
 class Drink(IState):
 
-    def __init__(self, duration):
-        self.duration = duration
-
-    def __str__(self):
-        pass
-
     def onStateEnter(self, entity):
-        print("Drink (onStateEnter)")
-        pass
+        print("Need me a beavarage")
 
     def onStateExecution(self, entity):
-        print("Drink (onStateExecution)")
-        pass
+        if entity.thirst <= 12:
+            if entity.bank >= 120:
+                from .Purchase import Purchase
+                state = Purchase()
+                entity.change(state)
+            else:
+                from .CollectMoney import CollectMoney
+                state = CollectMoney("LTU", "Student")
+                entity.change(state)
+        else:
+            entity.thirst -= 12 * GameTime.deltaTime
 
     def onStateExit(self, entity):
-        print("Drink (onStateExit)")
         pass
-

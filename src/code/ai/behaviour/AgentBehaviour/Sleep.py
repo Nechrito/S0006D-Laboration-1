@@ -1,23 +1,20 @@
 from src.code.ai.behaviour.IState import IState
+from src.code.engine.GameTime import GameTime
 
 
 class Sleep(IState):
 
-    def __init__(self, duration):
-        self.duration = duration
-
-    def __str__(self):
-        pass
-
     def onStateEnter(self, entity):
-        print("Sleep (onStateEnter)")
-        pass
+        print("Zzzz...")
 
     def onStateExecution(self, entity):
-        print("Sleep (onStateExecution)")
-        pass
+        if entity.fatigue <= 10:
+            from .Eat import Eat
+            state = Eat()
+            entity.change(state)
+        else:
+            entity.fatigue -= 11 * GameTime.deltaTime
 
     def onStateExit(self, entity):
-        print("Sleep (onStateExit)")
         pass
 

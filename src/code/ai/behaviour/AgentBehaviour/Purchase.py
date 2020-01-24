@@ -1,23 +1,24 @@
 from src.code.ai.behaviour.IState import IState
+from src.code.engine.GameTime import GameTime
 
 
 class Purchase(IState):
 
-    def __init__(self, duration):
-        self.duration = duration
-
-    def __str__(self):
-        pass
-
     def onStateEnter(self, entity):
-        print("Purchase (onStateEnter)")
-        pass
+        print("Time to make use of this bank")
 
     def onStateExecution(self, entity):
-        print("Purchase (onStateExecution)")
-        pass
+        if entity.bank > 75:
+            from .Hangout import Hangout
+            state = Hangout(entity)
+            entity.change(state)
+        elif entity.hunger > 60:
+            from .Eat import Eat
+            state = Eat()
+            entity.change(state)
+        else:
+            entity.bank -= 7 * GameTime.deltaTime
+            entity.hunger += 6 * GameTime.deltaTime
 
     def onStateExit(self, entity):
-        print("Purchase (onStateExit)")
         pass
-

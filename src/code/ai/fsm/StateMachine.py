@@ -1,36 +1,23 @@
-from src.code.ai.fsm.StateTransition import StateTransition
-
-
 class StateMachine:
 
-    def __init__(self, transitions, currentstate, endstate):
-        self.transitions = transitions
+    def __init__(self, entity, currentstate):
+        self.owner = entity
         self.currentState = currentstate
-        self.previousState = endstate
-        self.endState = endstate
+        self.previousState = currentstate
+        self.currentState.onStateEnter(self.owner)
 
-    def getNext(self, nextState):
-        transition = StateTransition(self.currentState, nextState)
-        try:
-            nextTransition = self.transitions.get(transition)
-        except Exception:
-            raise Exception("Invalid transition: " + str(self.currentState) + " -> " + str(nextState))
+    def update(self):
+        self.currentState.onStateExecution(self.owner)
 
-        return nextTransition
+    def revertState(self):
+        self.changeState(self.previousState)
 
-    def canReachNext(self, nextState):
-        transition = StateTransition(self.currentState, nextState)
-        if self.transitions.get(transition):
-            return True
-        else:
-            return False
-
-    def moveNext(self, nextState):
-        if not self.canReachNext(nextState):
-            print("Failed to change state!")
-            return
+    def changeState(self, nextState):
+        self.currentState.onStateExit(self.owner)
 
         self.previousState = self.currentState
-        self.currentState = self.getNext(nextState)
+        self.currentState = nextState
 
-        print("Changed state from " + str(self.previousState) + " to " + str(self.currentState))
+        self.currentState.onStateEnter(self.owner)
+
+        # print("Changed state from " + str(self.previousState) + " to " + str(self.currentState))

@@ -1,20 +1,18 @@
 import abc
 
+from src.code.ai.Character import Character
+
 
 class IState(object, metaclass=abc.ABCMeta):
 
     @abc.abstractmethod
-    def __str__(self):
-        raise NotImplementedError('The abstract methods are not implemented everywhere...')
-
-    @abc.abstractmethod
-    def onStateEnter(self, entity):
+    def onStateEnter(self, entity: Character):
         pass
 
     @abc.abstractmethod
-    def onStateExecution(self, entity):
+    def onStateExecution(self, entity: Character):
         pass
 
     @abc.abstractmethod
-    def onStateExit(self, entity):
+    def onStateExit(self, entity: Character):
         pass
