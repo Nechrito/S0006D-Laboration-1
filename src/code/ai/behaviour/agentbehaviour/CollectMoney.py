@@ -1,17 +1,20 @@
-import sys
-
-from src.code.ai.behaviour.IState import IState
-from src.code.engine.GameTime import GameTime
+from ..IState import IState
+from ....engine.GameTime import GameTime
+import random
 
 
 class CollectMoney(IState):
 
-    def __init__(self, location, workplaceName):
-        self.location = location
-        self.workplace = workplaceName
+    def __init__(self):
+        alternatives = {'Pinchos': 'Bartender', 'LTU': 'Student', 'Stackoverflow HQ': 'Smartass'}
+        randValue = random.choice(list(alternatives.items()))
+        self.workplace = randValue
+
+    def __repr__(self):
+        return 'Working'
 
     def onStateEnter(self, entity):
-        print("Time to start working at " + self.location + " as " + self.workplace)
+        print(entity.name + ": " + "Sigh.. another day at " + self.workplace[0] + " as a " + self.workplace[1])
 
     def onStateExecution(self, entity):
         if entity.fatigue >= 70:
@@ -19,7 +22,7 @@ class CollectMoney(IState):
             state = Sleep()
             entity.change(state)
 
-        elif entity.bank > 90:
+        elif entity.bank > 150:
             from .Purchase import Purchase
             state = Purchase()
             entity.change(state)

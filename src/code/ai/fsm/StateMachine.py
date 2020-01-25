@@ -2,12 +2,18 @@ class StateMachine:
 
     def __init__(self, entity, currentstate):
         self.owner = entity
+        self.globalState = None
+        self.previousState = None
         self.currentState = currentstate
-        self.previousState = currentstate
         self.currentState.onStateEnter(self.owner)
 
     def update(self):
         self.currentState.onStateExecution(self.owner)
+        if self.globalState:
+            self.globalState.onStateExecution(self.owner)
+
+    def setGlobal(self, state):
+        self.globalState = state
 
     def revertState(self):
         self.changeState(self.previousState)
@@ -19,5 +25,3 @@ class StateMachine:
         self.currentState = nextState
 
         self.currentState.onStateEnter(self.owner)
-
-        # print("Changed state from " + str(self.previousState) + " to " + str(self.currentState))

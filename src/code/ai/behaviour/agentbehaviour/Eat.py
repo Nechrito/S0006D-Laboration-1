@@ -4,8 +4,11 @@ from src.code.engine.GameTime import GameTime
 
 class Eat(IState):
 
+    def __repr__(self):
+        return 'Eating'
+
     def onStateEnter(self, entity):
-        print("Time for lunch!")
+        print(entity.name + ": " + "Time for lunch!")
 
     def onStateExecution(self, entity):
         if entity.hunger <= 10:
@@ -15,8 +18,7 @@ class Eat(IState):
                 entity.change(state)
             else:
                 from .CollectMoney import CollectMoney
-                state = CollectMoney("Pinchos", "Bartender")
-                entity.change(state)
+                entity.change(CollectMoney())
         else:
             entity.hunger -= 12 * GameTime.deltaTime
             entity.bank -= 3 * GameTime.deltaTime

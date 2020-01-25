@@ -1,18 +1,24 @@
 import abc
 
-from src.code.ai.Character import Character
+from src.code.engine.Entity import Entity
 
 
 class IState(object, metaclass=abc.ABCMeta):
 
     @abc.abstractmethod
-    def onStateEnter(self, entity: Character):
+    def __repr__(self):
         pass
 
     @abc.abstractmethod
-    def onStateExecution(self, entity: Character):
+    def onStateEnter(self, entity: Entity):
         pass
 
     @abc.abstractmethod
-    def onStateExit(self, entity: Character):
+    def onStateExecution(self, entity: Entity):
         pass
+
+    @abc.abstractmethod
+    def onStateExit(self, entity: Entity):
+        pass
+
+

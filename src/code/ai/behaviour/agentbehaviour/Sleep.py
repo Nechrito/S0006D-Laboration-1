@@ -4,14 +4,16 @@ from src.code.engine.GameTime import GameTime
 
 class Sleep(IState):
 
+    def __repr__(self):
+        return 'Sleeping'
+
     def onStateEnter(self, entity):
-        print("Zzzz...")
+        print(entity.name + ": " + "Zzzz...")
 
     def onStateExecution(self, entity):
         if entity.fatigue <= 10:
             from .Eat import Eat
-            state = Eat()
-            entity.change(state)
+            entity.change(Eat())
         else:
             entity.fatigue -= 11 * GameTime.deltaTime
 

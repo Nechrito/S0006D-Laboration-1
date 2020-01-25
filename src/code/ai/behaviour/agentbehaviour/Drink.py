@@ -4,19 +4,20 @@ from src.code.engine.GameTime import GameTime
 
 class Drink(IState):
 
+    def __repr__(self):
+        return 'Drinking'
+
     def onStateEnter(self, entity):
-        print("Need me a beavarage")
+        print(entity.name + ": " + "Need me a beavarage")
 
     def onStateExecution(self, entity):
         if entity.thirst <= 12:
             if entity.bank >= 120:
                 from .Purchase import Purchase
-                state = Purchase()
-                entity.change(state)
+                entity.change(Purchase())
             else:
                 from .CollectMoney import CollectMoney
-                state = CollectMoney("LTU", "Student")
-                entity.change(state)
+                entity.change(CollectMoney())
         else:
             entity.thirst -= 12 * GameTime.deltaTime
 
