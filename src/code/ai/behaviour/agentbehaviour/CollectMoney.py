@@ -2,21 +2,28 @@ from ..IState import IState
 from ....engine.GameTime import GameTime
 import random
 
+from ....environment.allbuildings import getLTU, getStackHQ, getPinchos
+
 
 class CollectMoney(IState):
 
     def __init__(self):
-        alternatives = {'Pinchos': 'Bartender', 'LTU': 'Student', 'Stackoverflow HQ': 'Smartass'}
-        randValue = random.choice(list(alternatives.items()))
-        self.workplace = randValue
+        alternatives = [getLTU(), getPinchos(), getStackHQ()]
+        randValue = random.randrange(0, len(alternatives))
+        self.workplace = alternatives[randValue]
 
     def __repr__(self):
         return 'Working'
 
     def onStateEnter(self, entity):
-        print(entity.name + ": " + "Sigh.. another day at " + self.workplace[0] + " as a " + self.workplace[1])
+        print(entity.name + ": " + "Sigh.. another day at " + self.workplace.name + " as a " + self.workplace.description)
 
     def onStateExecution(self, entity):
+
+        if not entity.isClose(self.workplace.position):
+            entity.move(self.workplace.position)
+            return
+
         if entity.fatigue >= 70:
             from .Sleep import Sleep
             state = Sleep()

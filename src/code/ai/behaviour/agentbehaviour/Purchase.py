@@ -1,5 +1,6 @@
 from src.code.ai.behaviour.IState import IState
 from src.code.engine.GameTime import GameTime
+from src.code.environment.allbuildings import getStore
 
 
 class Purchase(IState):
@@ -11,6 +12,11 @@ class Purchase(IState):
         print(entity.name + ": " + "Time to make use of this bank")
 
     def onStateExecution(self, entity):
+
+        if not entity.isClose(getStore().position):
+            entity.move(getStore().position)
+            return
+
         if entity.bank > 75:
             from .Hangout import Hangout
             entity.change(Hangout())

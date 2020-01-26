@@ -1,5 +1,6 @@
 from src.code.ai.behaviour.IState import IState
 from src.code.engine.GameTime import GameTime
+from src.code.environment.allbuildings import getSleep
 
 
 class Sleep(IState):
@@ -11,6 +12,11 @@ class Sleep(IState):
         print(entity.name + ": " + "Zzzz...")
 
     def onStateExecution(self, entity):
+
+        if not entity.isClose(getSleep().position):
+            entity.move(getSleep().position)
+            return
+
         if entity.fatigue <= 10:
             from .Eat import Eat
             entity.change(Eat())

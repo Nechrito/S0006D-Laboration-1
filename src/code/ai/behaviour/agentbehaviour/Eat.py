@@ -1,5 +1,6 @@
 from src.code.ai.behaviour.IState import IState
 from src.code.engine.GameTime import GameTime
+from src.code.environment.allbuildings import getEat
 
 
 class Eat(IState):
@@ -11,6 +12,11 @@ class Eat(IState):
         print(entity.name + ": " + "Time for lunch!")
 
     def onStateExecution(self, entity):
+
+        if not entity.isClose(getEat().position):
+            entity.move(getEat().position)
+            return
+
         if entity.hunger <= 10:
             if entity.thirst >= 30:
                 from .Drink import Drink

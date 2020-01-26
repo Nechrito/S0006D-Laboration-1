@@ -1,27 +1,24 @@
-import pygame
-from pygame.math import Vector2
+import math
 
+import pygame
+from src.Settings import *
 from src.code.ai.fsm.StateMachine import StateMachine
 from src.code.engine.GameTime import GameTime
+import random
 
 
 class Entity(pygame.sprite.Sprite):
-    def __init__(self, name, fatigue, bank, thirst, hunger, state, category, x, y, image):
+    def __init__(self, name, state, category, x, y, image):
         pygame.sprite.Sprite.__init__(self, category)
         self.image = image
-        self.rect = self.image.get_rect()
-        self.rect.center = (x, y)
 
-        self.position = [x, y]
-        self.velocity = (0, 0)
-        self.acc = (0, 0)
-        self.rotation = 0
-
+        self.position = [x + TILESIZE_X / 2, y + TILESIZE_Y / 2]
         self.name = name
-        self.fatigue = fatigue
-        self.bank = bank
-        self.thirst = thirst
-        self.hunger = hunger
+
+        self.fatigue = random.randrange(0, 70)
+        self.bank = random.randrange(0, 120)
+        self.thirst = random.randrange(0, 50)
+        self.hunger = random.randrange(0, 50)
         self.stateMachine = StateMachine(self, state)
 
     def update(self):
@@ -34,12 +31,12 @@ class Entity(pygame.sprite.Sprite):
 
         self.stateMachine.update()
 
-    def move(self, position):
-        self.position[0] += position[0] * GameTime.deltaTime
-        self.position[1] += position[1] * GameTime.deltaTime
+    def isClose(self, target):
+        return math.sqrt((self.position[0] - target[0])**2 + (self.position[1] - target[1])**2) < 20
 
-    def getPositon(self):
-        return self.position
+    def move(self, target):
+        self.position[0] += (target[0] - self.position[0]) * GameTime.deltaTime
+        self.position[1] += (target[1] - self.position[1]) * GameTime.deltaTime
 
     def change(self, state):
         self.stateMachine.changeState(state)
