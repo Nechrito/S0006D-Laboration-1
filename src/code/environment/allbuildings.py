@@ -5,8 +5,8 @@ def getLTU():
     return Building((850, 415), "LTU", "Student")
 
 
-def getPinchos():
-    return Building((342, 705), "Pinchos", "Bartender")
+def getClub():
+    return Building((342, 705), "Club", "Bartender")
 
 
 def getStackHQ():
@@ -14,19 +14,19 @@ def getStackHQ():
 
 
 def getDrink():
-    return Building((150, 610), "Drink")
+    return Building((150, 610), "Bar")
 
 
-def getEat():
-    return Building((500, 415), "Eat")
+def getResturant():
+    return Building((500, 415), "Resturant")
 
 
 def getStore():
     return Building((707, 385), "Store")
 
 
-def getSleep():
-    return Building((735, 603), "Sleep")
+def getHotel():
+    return Building((735, 603), "Hotel")
 
 
 def getHangout():

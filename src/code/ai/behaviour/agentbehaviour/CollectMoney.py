@@ -1,14 +1,17 @@
-from ..IState import IState
-from ....engine.GameTime import GameTime
+from typing import List
 import random
 
-from ....environment.allbuildings import getLTU, getStackHQ, getPinchos
+from ..IState import IState
+from ....engine.GameTime import GameTime
+
+from ....environment.allbuildings import getLTU, getStackHQ, getClub
+from ....environment.building import Building
 
 
 class CollectMoney(IState):
 
     def __init__(self):
-        alternatives = [getLTU(), getPinchos(), getStackHQ()]
+        alternatives: List[Building] = [getLTU(), getClub(), getStackHQ()]
         randValue = random.randrange(0, len(alternatives))
         self.workplace = alternatives[randValue]
 
@@ -20,25 +23,23 @@ class CollectMoney(IState):
 
     def onStateExecution(self, entity):
 
-        if not entity.isClose(self.workplace.position):
-            entity.move(self.workplace.position)
+        if not entity.isClose(self.workplace.randomized):
+            entity.move(self.workplace.randomized)
             return
 
-        if entity.fatigue >= 70:
-            from .Sleep import Sleep
-            state = Sleep()
-            entity.change(state)
-
-        elif entity.bank > 150:
+        if entity.bank > 130:
             from .Purchase import Purchase
-            state = Purchase()
-            entity.change(state)
+            entity.change(Purchase())
+
+        elif entity.bank > 80:
+            from .Hangout import Hangout
+            entity.change(Hangout())
 
         else:
-            entity.fatigue += 8 * GameTime.deltaTime
-            entity.bank += 10 * GameTime.deltaTime
-            entity.hunger += 4 * GameTime.deltaTime
-            entity.thirst += 3 * GameTime.deltaTime
+            entity.fatigue += 2 * GameTime.deltaTime
+            entity.bank += 3 * GameTime.deltaTime
+            entity.hunger += 1 * GameTime.deltaTime
+            entity.thirst += 0.5 * GameTime.deltaTime
 
     def onStateExit(self, entity):
         pass

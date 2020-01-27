@@ -1,8 +1,15 @@
+from ....engine.Entity import Entity
 from ..IState import IState
-from src.code.engine.Entity import Entity
+from .Drink import Drink
+from .Sleep import Sleep
+from .CollectMoney import CollectMoney
+from .Eat import Eat
 
 
 class Global(IState):
+
+    def __init__(self):
+        self.lastState = None
 
     def __repr__(self):
         pass
@@ -11,17 +18,22 @@ class Global(IState):
         pass
 
     def onStateExecution(self, entity: Entity):
-        if entity.hunger >= 90:
-            from .Eat import Eat
+
+        if entity.hunger >= 99 and not self.lastState == Eat:
+            self.lastState = Eat
             entity.change(Eat())
 
-        elif entity.thirst >= 90:
-            from .Drink import Drink
+        if entity.thirst >= 99 and not self.lastState == Drink:
+            self.lastState = Drink
             entity.change(Drink())
 
-        elif entity.fatigue >= 90:
-            from .Sleep import Sleep
+        if entity.fatigue >= 99 and not self.lastState == Sleep:
+            self.lastState = Sleep
             entity.change(Sleep())
+
+        if entity.bank <= 1 and not self.lastState == CollectMoney:
+            self.lastState = CollectMoney
+            entity.change(CollectMoney())
 
     def onStateExit(self, entity: Entity):
         pass

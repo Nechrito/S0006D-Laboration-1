@@ -14,6 +14,19 @@ class Renderer:
         screen.blit(mapImg, mapRect)
 
     @classmethod
+    def renderCircle(cls, position, radius, color=(255, 255, 255)):
+        screen = pygame.display.get_surface()
+        pygame.draw.circle(screen, color, position, radius, 1)
+
+    @classmethod
+    def renderRect(cls, size, pos, color=(255, 255, 255), alpha=128):
+        rect = pygame.Surface(size)
+        rect.set_alpha(alpha)
+        rect.fill(color)
+        screen = pygame.display.get_surface()
+        screen.blit(rect, pos)
+
+    @classmethod
     def renderText(cls, text: str, position, size, color=(255, 255, 255)):
         font = pygame.freetype.Font(FONT_REGULAR, int(HEIGHT * size / WIDTH))  # Scaled with resolution
         fontRendered, fontRect = font.render(text, color)

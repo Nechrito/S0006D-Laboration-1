@@ -17,18 +17,13 @@ class Purchase(IState):
             entity.move(getStore().position)
             return
 
-        if entity.bank > 75:
-            from .Hangout import Hangout
-            entity.change(Hangout())
-
-        elif entity.hunger > 60:
+        if entity.hunger > 60:
             from .Eat import Eat
-            state = Eat()
-            entity.change(state)
+            entity.change(Eat())
 
         else:
-            entity.bank -= 7 * GameTime.deltaTime
-            entity.hunger += 6 * GameTime.deltaTime
+            entity.bank -= 3 * GameTime.deltaTime
+            entity.hunger += 1 * GameTime.deltaTime
 
     def onStateExit(self, entity):
         pass

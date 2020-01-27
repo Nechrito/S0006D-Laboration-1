@@ -1,24 +1,27 @@
 import pygame
 from src.Settings import *
 from src.code.engine.Entity import Entity
+from src.code.engine.GameTime import GameTime
 
 
 class CameraInstance:
 
     def __init__(self, width, height):
         self.camera = pygame.Rect(0, 0, width, height)
+        self.x = 0
+        self.y = 0
         self.width = width
         self.height = height
 
-    def setRect(self, rect):
+    def moveRect(self, rect):
         return rect.move(self.camera.topleft)
 
-    def apply(self, entity):
+    def moveSprite(self, entity):
         return entity.rect.move(self.camera.topleft)
 
     def update(self, target: Entity):
-        self.x = -target.position[0] + int(WIDTH / 2)
-        self.y = -target.position[1] + int(HEIGHT / 2)
+        self.x += ((-target.rect.centerx + int(WIDTH / 2)) - self.x) * GameTime.deltaTime * 1
+        self.y += ((-target.rect.centery + int(HEIGHT / 2)) - self.y) * GameTime.deltaTime * 1
 
         #  Make sure we're within map boundaries
         self.x = min(0, self.x)

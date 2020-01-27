@@ -1,6 +1,6 @@
-from src.code.ai.behaviour.IState import IState
-from src.code.engine.GameTime import GameTime
-from src.code.environment.allbuildings import getDrink
+from ..IState import IState
+from ....engine.GameTime import GameTime
+from ....environment.allbuildings import getDrink
 
 
 class Drink(IState):
@@ -17,15 +17,11 @@ class Drink(IState):
             entity.move(getDrink().position)
             return
 
-        if entity.thirst <= 12:
-            if entity.bank >= 120:
-                from .Purchase import Purchase
-                entity.change(Purchase())
-            else:
-                from .CollectMoney import CollectMoney
-                entity.change(CollectMoney())
+        if entity.thirst <= 8:
+            entity.revertState()
         else:
-            entity.thirst -= 12 * GameTime.deltaTime
+            entity.thirst -= 5 * GameTime.deltaTime
+            entity.bank -= 0.30 * GameTime.deltaTime
 
     def onStateExit(self, entity):
         pass

@@ -1,6 +1,6 @@
 from src.code.ai.behaviour.IState import IState
 from src.code.engine.GameTime import GameTime
-from src.code.environment.allbuildings import getSleep
+from src.code.environment.allbuildings import getHotel
 
 
 class Sleep(IState):
@@ -13,15 +13,15 @@ class Sleep(IState):
 
     def onStateExecution(self, entity):
 
-        if not entity.isClose(getSleep().position):
-            entity.move(getSleep().position)
+        if not entity.isClose(getHotel().position):
+            entity.move(getHotel().position)
             return
 
         if entity.fatigue <= 10:
             from .Eat import Eat
             entity.change(Eat())
         else:
-            entity.fatigue -= 11 * GameTime.deltaTime
+            entity.fatigue -= 7 * GameTime.deltaTime
 
     def onStateExit(self, entity):
         pass

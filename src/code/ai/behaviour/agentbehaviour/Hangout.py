@@ -1,12 +1,12 @@
-from src.code.ai.behaviour.IState import IState
-from src.code.engine.GameTime import GameTime
-from src.code.environment.allbuildings import getHangout
+from ..IState import IState
+from ....engine.GameTime import GameTime
+from ....environment.allbuildings import getHangout
 
 
 class Hangout(IState):
 
     def __repr__(self):
-        return 'Hanging out'
+        return 'Hangout'
 
     def onStateEnter(self, entity):
         print(entity.name + ": " + "Can't wait to hangout with my pal")
@@ -17,14 +17,8 @@ class Hangout(IState):
             entity.move(getHangout().position)
             return
 
-        if entity.fatigue > 65:
-            from .Sleep import Sleep
-            entity.change(Sleep())
-
-        elif entity.bank > 30:
-            entity.bank -= 5 * GameTime.deltaTime
-
-        entity.fatigue += 7 * GameTime.deltaTime
+        entity.bank -= 3 * GameTime.deltaTime
+        entity.fatigue += 2 * GameTime.deltaTime
 
     def onStateExit(self, entity):
         pass
