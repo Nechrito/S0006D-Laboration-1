@@ -1,7 +1,7 @@
-from ..IState import IState
-from ....engine.GameTime import GameTime
-from ....environment.allbuildings import getHangout
-from ...messaging.message import Message
+from src.code.ai.behaviour.IState import IState
+from src.code.engine.GameTime import GameTime
+from src.code.environment.allbuildings import getHangout
+from src.code.ai.messaging.message import Message
 
 
 class Hangout(IState):
@@ -17,8 +17,12 @@ class Hangout(IState):
             entity.moveTo(getHangout().position)
             return
 
-        entity.bank -= 3 * GameTime.deltaTime
-        entity.fatigue += 2 * GameTime.deltaTime
+        if entity.hunger > 60:
+            from .Eat import Eat
+            entity.change(Eat())
+        else:
+            entity.bank -= 3 * GameTime.deltaTime
+            entity.fatigue += 2 * GameTime.deltaTime
 
     def onStateExit(self, entity):
         pass

@@ -5,6 +5,7 @@ from .Sleep import Sleep
 from .CollectMoney import CollectMoney
 from .Eat import Eat
 
+
 class Global(IState):
 
     def __init__(self):
@@ -20,17 +21,17 @@ class Global(IState):
 
         if entity.hunger >= 95 and not self.currentState == Eat:
             self.currentState = Eat
-            entity.change(Eat())
+            entity.stateMachine.setGlobalState(Eat())
 
-        if entity.thirst >= 95 and not self.currentState == Drink:
-            self.currentState = Drink
-            entity.change(Drink())
-
-        if entity.fatigue >= 95 and not self.currentState == Sleep:
+        elif entity.fatigue >= 95 and not self.currentState == Sleep:
             self.currentState = Sleep
             entity.change(Sleep())
 
-        if entity.bank <= 5 and not self.currentState == CollectMoney:
+        elif entity.thirst >= 95 and not self.currentState == Drink:
+            self.currentState = Drink
+            entity.change(Drink())
+
+        elif entity.bank <= 5 and not self.currentState == CollectMoney:
             self.currentState = CollectMoney
             entity.change(CollectMoney())
 

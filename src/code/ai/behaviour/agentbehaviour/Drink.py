@@ -10,7 +10,7 @@ class Drink(IState):
         return 'Drinking'
 
     def onStateEnter(self, entity):
-        Message.sendConsole(entity, "Need me a beavarage")
+        Message.sendConsole(entity, "Need me a beverage")
 
     def onStateExecution(self, entity):
 
@@ -19,7 +19,8 @@ class Drink(IState):
             return
 
         if entity.thirst <= 8:
-            entity.revertState()
+            from .CollectMoney import CollectMoney
+            entity.change(CollectMoney())
         else:
             entity.thirst -= 5 * GameTime.deltaTime
             entity.bank -= 0.30 * GameTime.deltaTime

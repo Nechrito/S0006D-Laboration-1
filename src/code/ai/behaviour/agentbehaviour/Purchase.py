@@ -3,6 +3,7 @@ from src.code.engine.GameTime import GameTime
 from src.code.environment.allbuildings import getStore
 from ...messaging.message import Message
 
+
 class Purchase(IState):
 
     def __repr__(self):
