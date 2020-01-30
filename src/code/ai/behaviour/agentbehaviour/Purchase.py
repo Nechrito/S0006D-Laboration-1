@@ -1,7 +1,7 @@
 from src.code.ai.behaviour.IState import IState
 from src.code.engine.GameTime import GameTime
 from src.code.environment.allbuildings import getStore
-
+from ...messaging.message import Message
 
 class Purchase(IState):
 
@@ -9,12 +9,12 @@ class Purchase(IState):
         return 'Purchasing'
 
     def onStateEnter(self, entity):
-        print(entity.name + ": " + "Time to make use of this bank")
+        Message.sendConsole(entity, "Time to make use of my funds")
 
     def onStateExecution(self, entity):
 
-        if not entity.isClose(getStore().position):
-            entity.move(getStore().position)
+        if not entity.isCloseTo(getStore().position):
+            entity.moveTo(getStore().position)
             return
 
         if entity.hunger > 60:

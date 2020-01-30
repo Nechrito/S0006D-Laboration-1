@@ -20,8 +20,9 @@ class CameraInstance:
         return entity.rect.move(self.camera.topleft)
 
     def update(self, target: Entity):
-        self.x += ((-target.rect.centerx + int(WIDTH / 2)) - self.x) * GameTime.deltaTime * 1
-        self.y += ((-target.rect.centery + int(HEIGHT / 2)) - self.y) * GameTime.deltaTime * 1
+
+        self.x += ((-target.rect.centerx + int(WIDTH / 2)) - self.x) * GameTime.fixedDeltaTime
+        self.y += ((-target.rect.centery + int(HEIGHT / 2)) - self.y) * GameTime.fixedDeltaTime
 
         #  Make sure we're within map boundaries
         self.x = min(0, self.x)

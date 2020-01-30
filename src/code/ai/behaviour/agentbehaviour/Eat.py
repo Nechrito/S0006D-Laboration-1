@@ -1,7 +1,7 @@
 from ..IState import IState
 from ....engine.GameTime import GameTime
 from ....environment.allbuildings import getResturant
-
+from ...messaging.message import Message
 
 class Eat(IState):
 
@@ -9,12 +9,12 @@ class Eat(IState):
         return 'Eating'
 
     def onStateEnter(self, entity):
-        print(entity.name + ": " + "Time for lunch!")
+        Message.sendConsole(entity, "Time for lunch!")
 
     def onStateExecution(self, entity):
 
-        if not entity.isClose(getResturant().position):
-            entity.move(getResturant().position)
+        if not entity.isCloseTo(getResturant().position):
+            entity.moveTo(getResturant().position)
             return
 
         if entity.hunger <= 10:

@@ -19,7 +19,7 @@ WIDTH = 1024
 HEIGHT = 768
 RESOLUTION = [WIDTH, HEIGHT]
 
-FPS = 60
+FPS = 144
 
 TITLE = "S0006D - Laboration 1 - Philip Lindh"
 
@@ -28,8 +28,8 @@ FONT_BLACK = "resources/fonts/Roboto-Black.ttf"
 FONT_BOLD = "resources/fonts/Roboto-Bold.ttf"
 FONT_REGULAR = "resources/fonts/Roboto-Regular.ttf"
 
-TILESIZE_X = 16
+TILESIZE = 16
 TILESIZE_Y = 16
 
-GRIDWIDTH = WIDTH / TILESIZE_X
+GRIDWIDTH = WIDTH / TILESIZE
 GRIDHEIGHT = HEIGHT / TILESIZE_Y

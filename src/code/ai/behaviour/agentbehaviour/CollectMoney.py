@@ -2,6 +2,7 @@ from typing import List
 import random
 
 from ..IState import IState
+from ...messaging.message import Message
 from ....engine.GameTime import GameTime
 
 from ....environment.allbuildings import getLTU, getStackHQ, getClub
@@ -19,27 +20,27 @@ class CollectMoney(IState):
         return 'Working'
 
     def onStateEnter(self, entity):
-        print(entity.name + ": " + "Sigh.. another day at " + self.workplace.name + " as a " + self.workplace.description)
+        Message.sendConsole(entity, "Sigh.. another day at " + self.workplace.name + " as a " + self.workplace.description)
 
     def onStateExecution(self, entity):
 
-        if not entity.isClose(self.workplace.randomized):
-            entity.move(self.workplace.randomized)
+        if not entity.isCloseTo(self.workplace.randomized):
+            entity.moveTo(self.workplace.randomized)
             return
 
-        if entity.bank > 130:
-            from .Purchase import Purchase
-            entity.change(Purchase())
+        if entity.fatigue >= 80:
+            if entity.bank > 90:
+                from .Purchase import Purchase
+                entity.change(Purchase())
 
-        elif entity.bank > 80:
-            from .Hangout import Hangout
-            entity.change(Hangout())
+            elif entity.bank > 100:
+                from .Hangout import Hangout
+                entity.change(Hangout())
 
-        else:
-            entity.fatigue += 2 * GameTime.deltaTime
-            entity.bank += 3 * GameTime.deltaTime
-            entity.hunger += 1 * GameTime.deltaTime
-            entity.thirst += 0.5 * GameTime.deltaTime
+        entity.fatigue += 2 * GameTime.deltaTime
+        entity.bank += 3 * GameTime.deltaTime
+        entity.hunger += 1 * GameTime.deltaTime
+        entity.thirst += 0.5 * GameTime.deltaTime
 
     def onStateExit(self, entity):
         pass

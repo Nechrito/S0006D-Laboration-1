@@ -4,20 +4,27 @@ import pytmx
 
 class Map:
     def __init__(self, filename):
-        instance = pytmx.load_pygame(filename, pixelalpha=True)
-        self.width = instance.width * instance.tilewidth
-        self.height = instance.height * instance.tileheight
-        self.data = instance
+        self.instance = pytmx.load_pygame(filename, pixelalpha=True)
+        self.width = self.instance.width * self.instance.tilewidth
+        self.height = self.instance.height * self.instance.tileheight
+        self.collisionLayer = []
+
+        for obj in self.instance.get_layer_by_name("Collision"):
+            properties = obj.__dict__
+            if properties['type'] == 'blocker':
+                x = properties['x']
+                y = properties['y']
+                self.collisionLayer.append((x, y))
 
     def render(self, surface):
-        tileImg = self.data.get_tile_image_by_gid  # Fetches the image represented by the ID
-        for layer in self.data.visible_layers:
+        tileImg = self.instance.get_tile_image_by_gid  # Fetches the image represented by the ID
+        for layer in self.instance.visible_layers:
             if isinstance(layer, pytmx.TiledTileLayer):
                 for x, y, gid, in layer:
                     tile = tileImg(gid)
                     if tile:
-                        surface.blit(tile, (x * self.data.tilewidth,
-                                            y * self.data.tileheight))
+                        surface.blit(tile, (x * self.instance.tilewidth,
+                                            y * self.instance.tileheight))
 
     def create(self):
         surface = pygame.Surface((self.width, self.height))

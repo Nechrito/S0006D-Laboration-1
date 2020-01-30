@@ -1,7 +1,7 @@
 from src.code.ai.behaviour.IState import IState
 from src.code.engine.GameTime import GameTime
 from src.code.environment.allbuildings import getHotel
-
+from ...messaging.message import Message
 
 class Sleep(IState):
 
@@ -9,12 +9,12 @@ class Sleep(IState):
         return 'Sleeping'
 
     def onStateEnter(self, entity):
-        print(entity.name + ": " + "Zzzz...")
+        Message.sendConsole(entity, "ZzzZz...")
 
     def onStateExecution(self, entity):
 
-        if not entity.isClose(getHotel().position):
-            entity.move(getHotel().position)
+        if not entity.isCloseTo(getHotel().position):
+            entity.moveTo(getHotel().position)
             return
 
         if entity.fatigue <= 10:

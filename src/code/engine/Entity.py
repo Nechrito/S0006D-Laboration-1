@@ -3,22 +3,30 @@ import math
 import pygame
 from src.Settings import *
 from src.code.ai.fsm.StateMachine import StateMachine
+from src.code.ai.pathfinding.breadthfirst import BreadthFirstSearch, computePath
 from src.code.engine.GameTime import GameTime
 import random
 
 
 class Entity(pygame.sprite.Sprite):
-    def __init__(self, name, state, globalState, category, x, y, image):
-        pygame.sprite.Sprite.__init__(self, category)
-        self.image = image
 
-        self.position = [x + TILESIZE_X / 2, y + TILESIZE_Y / 2]
+    def __init__(self, name, state, globalState, category, x, y, image, path):
+
+        pygame.sprite.Sprite.__init__(self, category)
+
+        self.image = image
         self.name = name
+        self.path = path
+        self.position = [x + TILESIZE / 2, y + TILESIZE_Y / 2]
+        self.length = 0
+        self.limit = 0
+        self.direction = [0, 0]
 
         self.fatigue = random.randrange(0, 70)
         self.bank = random.randrange(0, 120)
         self.thirst = random.randrange(0, 50)
         self.hunger = random.randrange(0, 50)
+
         self.stateMachine = StateMachine(self, state, globalState)
 
     def update(self):
@@ -32,17 +40,26 @@ class Entity(pygame.sprite.Sprite):
 
         self.stateMachine.update()
 
-    def isClose(self, target, distance=20):
+    def isClose(self, distance=20):
+        return self.length <= distance
+
+    def isCloseTo(self, target, distance=20):
         return self.distanceTo(target) <= distance
 
     def distanceTo(self, target):
-        return math.sqrt((self.rect.centerx - target[0]) ** 2 + (self.rect.centery - target[1]) ** 2)
+        return math.sqrt((self.position[0] - target[0]) ** 2 + (self.position[1] - target[1]) ** 2)
 
-    def move(self, target):
+    def moveTo(self, target, limit = 0):
         length = self.distanceTo(target)
 
-        self.position[0] += ((target[0] - self.position[0]) / length) * GameTime.deltaTime * 70
-        self.position[1] += ((target[1] - self.position[1]) / length) * GameTime.deltaTime * 70
+        self.length = length
+        self.limit = limit
+
+        self.direction[0] = ((target[0] - self.position[0]) / self.length)
+        self.direction[1] = ((target[1] - self.position[1]) / self.length)
+
+        self.position[0] += self.direction[0] * GameTime.deltaTime * 50
+        self.position[1] += self.direction[1] * GameTime.deltaTime * 50
 
     def change(self, state):
         self.stateMachine.changeState(state)

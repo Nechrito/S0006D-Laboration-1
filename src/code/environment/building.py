@@ -7,5 +7,5 @@ class Building:
         self.name = name
         self.description = desc
 
-        threshold = 60
-        self.randomized = self.position[0] + random.randrange(-threshold, threshold), self.position[1] + random.randrange(-threshold, 10)
+        threshold = 30
+        self.randomized = self.position[0] + random.randrange(-threshold, threshold), self.position[1] + random.randrange(-threshold, threshold / 2)
