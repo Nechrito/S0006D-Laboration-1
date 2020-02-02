@@ -38,9 +38,6 @@ class Game:
 
         self.camera = CameraInstance(self.map.width, self.map.height)
 
-        #for i in self.map.collisionLayer:
-            #i = self.camera.moveRect(pygame.Rect(i[0], i[1], TILESIZE, TILESIZE))
-
         self.clock = pygame.time.Clock()
         self.running = True
         self.slowmo = 1
@@ -59,7 +56,7 @@ class Game:
         self.entityGroup = pygame.sprite.Group()
         self.characterAlex = Entity("Alex", Hangout(), Global(), self.entityGroup, 495, 405, sensei)
         self.characterWendy = Entity("Wendy", CollectMoney(), Global(), self.entityGroup, 150, 610, hatguy)
-        self.characterJohn = Entity("John", Purchase(), Global(), self.entityGroup, 700, 380, hatguy)
+        self.characterJohn = Entity("John", Purchase(), Global(), self.entityGroup, 700, 380, sensei)
         self.characterJames = Entity("James", CollectMoney(), Global(), self.entityGroup, 940, 400, hatguy)
 
         self.characters = [self.characterAlex, self.characterWendy, self.characterJohn, self.characterJames]
