@@ -1,7 +1,7 @@
 from src.code.ai.behaviour.IState import IState
 from src.code.engine.GameTime import GameTime
-from src.code.environment.allbuildings import getStore
-from ...messaging.message import Message
+from src.code.environment.AllBuildings import getStore
+from ...messaging.Message import Message
 
 
 class Purchase(IState):
@@ -9,10 +9,10 @@ class Purchase(IState):
     def __repr__(self):
         return 'Purchasing'
 
-    def onStateEnter(self, entity):
+    def enter(self, entity):
         Message.sendConsole(entity, "Time to make use of my funds")
 
-    def onStateExecution(self, entity):
+    def execute(self, entity):
 
         if not entity.isCloseTo(getStore().position):
             entity.moveTo(getStore().position)
@@ -26,5 +26,5 @@ class Purchase(IState):
             entity.bank -= 3 * GameTime.deltaTime
             entity.hunger += 1 * GameTime.deltaTime
 
-    def onStateExit(self, entity):
+    def exit(self, entity):
         pass

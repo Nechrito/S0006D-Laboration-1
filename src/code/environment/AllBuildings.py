@@ -1,4 +1,4 @@
-from .building import Building
+from .Building import Building
 
 
 def getLTU():

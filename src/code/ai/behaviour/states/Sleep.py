@@ -1,17 +1,17 @@
 from src.code.ai.behaviour.IState import IState
 from src.code.engine.GameTime import GameTime
-from src.code.environment.allbuildings import getHotel
-from ...messaging.message import Message
+from src.code.environment.AllBuildings import getHotel
+from ...messaging.Message import Message
 
 class Sleep(IState):
 
     def __repr__(self):
         return 'Sleeping'
 
-    def onStateEnter(self, entity):
+    def enter(self, entity):
         Message.sendConsole(entity, "ZzzZz...")
 
-    def onStateExecution(self, entity):
+    def execute(self, entity):
 
         if not entity.isCloseTo(getHotel().position):
             entity.moveTo(getHotel().position)
@@ -23,6 +23,6 @@ class Sleep(IState):
         else:
             entity.fatigue -= 7 * GameTime.deltaTime
 
-    def onStateExit(self, entity):
+    def exit(self, entity):
         pass
 

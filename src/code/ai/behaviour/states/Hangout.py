@@ -1,7 +1,7 @@
 from src.code.ai.behaviour.IState import IState
 from src.code.engine.GameTime import GameTime
-from src.code.environment.allbuildings import getHangout
-from src.code.ai.messaging.message import Message
+from src.code.environment.AllBuildings import getHangout
+from src.code.ai.messaging.Message import Message
 
 
 class Hangout(IState):
@@ -9,10 +9,10 @@ class Hangout(IState):
     def __repr__(self):
         return 'Hangout'
 
-    def onStateEnter(self, entity):
+    def enter(self, entity):
         Message.sendConsole(entity, "Can't wait to hangout with my pals")
 
-    def onStateExecution(self, entity):
+    def execute(self, entity):
         if not entity.isCloseTo(getHangout().position):
             entity.moveTo(getHangout().position)
             return
@@ -24,5 +24,5 @@ class Hangout(IState):
             entity.bank -= 3 * GameTime.deltaTime
             entity.fatigue += 2 * GameTime.deltaTime
 
-    def onStateExit(self, entity):
+    def exit(self, entity):
         pass

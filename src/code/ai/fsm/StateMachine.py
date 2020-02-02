@@ -6,11 +6,12 @@ class StateMachine:
         self.locked = False
         self.previousState = None
         self.currentState = currentstate
-        self.currentState.onStateEnter(self.owner)
+        self.currentState.enter(self.owner)
 
     def update(self):
         if not self.locked:
-            self.currentState.onStateExecution(self.owner)
+            self.currentState.execute(self.owner)
+        self.globalState.execute(self.owner)
 
     def toggleLockState(self, value):
         self.locked = value
@@ -21,9 +22,10 @@ class StateMachine:
 
     def changeState(self, nextState):
 
-        self.currentState.onStateExit(self.owner)
-
         self.previousState = self.currentState
+
+        self.currentState.exit(self.owner)
+
         self.currentState = nextState
 
-        self.currentState.onStateEnter(self.owner)
+        self.currentState.enter(self.owner)

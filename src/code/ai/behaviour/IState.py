@@ -10,15 +10,15 @@ class IState(object, metaclass=abc.ABCMeta):
         pass
 
     @abc.abstractmethod
-    def onStateEnter(self, entity: Entity):
+    def enter(self, entity: Entity):
         pass
 
     @abc.abstractmethod
-    def onStateExecution(self, entity: Entity):
+    def execute(self, entity: Entity):
         pass
 
     @abc.abstractmethod
-    def onStateExit(self, entity: Entity):
+    def exit(self, entity: Entity):
         pass
 
 

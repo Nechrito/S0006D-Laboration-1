@@ -1,7 +1,7 @@
 from ..IState import IState
-from ...messaging.message import Message
+from ...messaging.Message import Message
 from ....engine.GameTime import GameTime
-from ....environment.allbuildings import getDrink
+from ....environment.AllBuildings import getDrink
 
 
 class Drink(IState):
@@ -9,10 +9,10 @@ class Drink(IState):
     def __repr__(self):
         return 'Drinking'
 
-    def onStateEnter(self, entity):
+    def enter(self, entity):
         Message.sendConsole(entity, "Need me a beverage")
 
-    def onStateExecution(self, entity):
+    def execute(self, entity):
 
         if not entity.isCloseTo(getDrink().position):
             entity.moveTo(getDrink().position)
@@ -25,5 +25,5 @@ class Drink(IState):
             entity.thirst -= 5 * GameTime.deltaTime
             entity.bank -= 0.30 * GameTime.deltaTime
 
-    def onStateExit(self, entity):
+    def exit(self, entity):
         pass

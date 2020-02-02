@@ -2,11 +2,11 @@ from typing import List
 import random
 
 from ..IState import IState
-from ...messaging.message import Message
+from ...messaging.Message import Message
 from ....engine.GameTime import GameTime
 
-from ....environment.allbuildings import getLTU, getStackHQ, getClub
-from ....environment.building import Building
+from ....environment.AllBuildings import getLTU, getStackHQ, getClub
+from ....environment.Building import Building
 
 
 class CollectMoney(IState):
@@ -19,10 +19,10 @@ class CollectMoney(IState):
     def __repr__(self):
         return 'Working'
 
-    def onStateEnter(self, entity):
-        Message.sendConsole(entity, "Sigh.. another day at " + self.workplace.name + " as a " + self.workplace.description)
+    def enter(self, entity):
+        Message.sendConsole(entity, "Another day at " + self.workplace.name + " working as a " + self.workplace.description)
 
-    def onStateExecution(self, entity):
+    def execute(self, entity):
 
         if not entity.isCloseTo(self.workplace.randomized):
             entity.moveTo(self.workplace.randomized)
@@ -42,5 +42,5 @@ class CollectMoney(IState):
         entity.hunger += 1 * GameTime.deltaTime
         entity.thirst += 0.5 * GameTime.deltaTime
 
-    def onStateExit(self, entity):
+    def exit(self, entity):
         pass

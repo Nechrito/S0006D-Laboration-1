@@ -56,8 +56,8 @@ class Entity(pygame.sprite.Sprite):
         self.direction[0] = ((target[0] - self.position[0]) / self.length)
         self.direction[1] = ((target[1] - self.position[1]) / self.length)
 
-        self.position[0] += self.direction[0] * GameTime.deltaTime * 50
-        self.position[1] += self.direction[1] * GameTime.deltaTime * 50
+        self.position[0] += self.direction[0] * GameTime.deltaTime * 30
+        self.position[1] += self.direction[1] * GameTime.deltaTime * 30
 
     def change(self, state):
         self.stateMachine.changeState(state)

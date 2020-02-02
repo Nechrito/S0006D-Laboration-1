@@ -3,17 +3,17 @@ import sys
 import pygame
 import pygame.freetype
 
-from src.Settings import *
-from src.code.engine.Entity import Entity
+from ...Settings import *
+from .Entity import Entity
 from .Camera import CameraInstance
 from .GameTime import GameTime
 from .MapLoader import Map
-from ..ai.behaviour.agentbehaviour.CollectMoney import CollectMoney
-from ..ai.behaviour.agentbehaviour.Global import Global
-from ..ai.behaviour.agentbehaviour.Hangout import Hangout
-from ..ai.behaviour.agentbehaviour.Purchase import Purchase
-from ..environment.allbuildings import getClub, getDrink, getLTU, getHangout, getHotel, getStackHQ, getStore, getResturant
-from src.code.engine.Renderer import Renderer
+from ..ai.behaviour.states.CollectMoney import CollectMoney
+from ..ai.behaviour.states.Global import Global
+from ..ai.behaviour.states.Hangout import Hangout
+from ..ai.behaviour.states.Purchase import Purchase
+from ..environment.AllBuildings import getClub, getDrink, getLTU, getHangout, getHotel, getStackHQ, getStore, getResturant
+from .Renderer import Renderer
 
 
 class Game:
@@ -40,7 +40,8 @@ class Game:
 
         self.clock = pygame.time.Clock()
         self.running = True
-        self.slowmo = 1
+        self.timeScaleCached = 10
+        self.timeScaleActive = self.timeScaleCached
 
         pygame.mouse.set_visible(False)
         pygame.event.set_grab(True)
@@ -71,11 +72,11 @@ class Game:
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
-                self.slowmo = 0.1
+                self.timeScaleActive = self.timeScaleCached * 0.1
             elif event.type == pygame.KEYUP and event.key == pygame.K_SPACE:
-                self.slowmo = 1
+                self.timeScaleActive = self.timeScaleCached
 
-        GameTime.updateTicks(self.slowmo)
+        GameTime.updateTicks(self.timeScaleActive)
 
         # this would've been great if I was aware of it earlier.. pygame.math.Vector2(pygame.mouse.get_pos()) // TILESIZE
         (x, y) = pygame.mouse.get_rel()
