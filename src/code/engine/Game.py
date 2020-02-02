@@ -12,9 +12,7 @@ from ..ai.behaviour.agentbehaviour.CollectMoney import CollectMoney
 from ..ai.behaviour.agentbehaviour.Global import Global
 from ..ai.behaviour.agentbehaviour.Hangout import Hangout
 from ..ai.behaviour.agentbehaviour.Purchase import Purchase
-from ..ai.pathfinding.breadthfirst import BreadthFirstSearch, computePath
-from ..environment.allbuildings import getClub, getDrink, getLTU, getHangout, getHotel, getStackHQ, getStore, \
-    getResturant
+from ..environment.allbuildings import getClub, getDrink, getLTU, getHangout, getHotel, getStackHQ, getStore, getResturant
 from src.code.engine.Renderer import Renderer
 
 
@@ -57,15 +55,12 @@ class Game:
 
         sensei = pygame.image.load(path.join(img_folder, 'sensei.png'))
         hatguy = pygame.image.load(path.join(img_folder, 'hat-guy.png'))
-        mani = pygame.image.load(path.join(img_folder, 'mani.png'))
-
-        self.pathAlgorithm = BreadthFirstSearch(WIDTH, HEIGHT, self.map.collisionLayer)
 
         self.entityGroup = pygame.sprite.Group()
-        self.characterAlex = Entity("Alex", Hangout(), Global(), self.entityGroup, 495, 405, sensei, self.pathAlgorithm)
-        self.characterWendy = Entity("Wendy", CollectMoney(), Global(), self.entityGroup, 150, 610, hatguy, self.pathAlgorithm)
-        self.characterJohn = Entity("John", Purchase(), Global(), self.entityGroup, 700, 380, hatguy, self.pathAlgorithm)
-        self.characterJames = Entity("James", CollectMoney(), Global(), self.entityGroup, 940, 400, hatguy, self.pathAlgorithm)
+        self.characterAlex = Entity("Alex", Hangout(), Global(), self.entityGroup, 495, 405, sensei)
+        self.characterWendy = Entity("Wendy", CollectMoney(), Global(), self.entityGroup, 150, 610, hatguy)
+        self.characterJohn = Entity("John", Purchase(), Global(), self.entityGroup, 700, 380, hatguy)
+        self.characterJames = Entity("James", CollectMoney(), Global(), self.entityGroup, 940, 400, hatguy)
 
         self.characters = [self.characterAlex, self.characterWendy, self.characterJohn, self.characterJames]
 

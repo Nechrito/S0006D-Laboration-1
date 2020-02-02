@@ -3,20 +3,18 @@ import math
 import pygame
 from src.Settings import *
 from src.code.ai.fsm.StateMachine import StateMachine
-from src.code.ai.pathfinding.breadthfirst import BreadthFirstSearch, computePath
 from src.code.engine.GameTime import GameTime
 import random
 
 
 class Entity(pygame.sprite.Sprite):
 
-    def __init__(self, name, state, globalState, category, x, y, image, path):
+    def __init__(self, name, state, globalState, category, x, y, image):
 
         pygame.sprite.Sprite.__init__(self, category)
 
         self.image = image
         self.name = name
-        self.path = path
         self.position = [x + TILESIZE / 2, y + TILESIZE_Y / 2]
         self.length = 0
         self.limit = 0
