@@ -43,8 +43,10 @@ class Game:
         self.timeScaleCached = 10
         self.timeScaleActive = self.timeScaleCached
 
-        pygame.mouse.set_visible(False)
-        pygame.event.set_grab(True)
+        self.cursorEnabled = False
+        pygame.mouse.set_visible(self.cursorEnabled)
+        pygame.event.set_grab(not self.cursorEnabled)
+
         self.cursor = (WIDTH / 2, HEIGHT / 2)
         self.cursorRect = pygame.Rect(self.cursor, (10, 10))
 
@@ -67,10 +69,18 @@ class Game:
 
     def update(self):
 
+        # pressed = pygame.key.get_pressed()
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT or event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                 pygame.quit()
                 sys.exit()
+
+            if event.type == pygame.KEYUP and event.key == pygame.K_LALT:
+                self.cursorEnabled = not self.cursorEnabled
+                pygame.mouse.set_visible(self.cursorEnabled)
+                pygame.event.set_grab(not self.cursorEnabled)
+
             if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
                 self.timeScaleActive = self.timeScaleCached * 0.1
             elif event.type == pygame.KEYUP and event.key == pygame.K_SPACE:
@@ -78,10 +88,11 @@ class Game:
 
         GameTime.updateTicks(self.timeScaleActive)
 
-        # this would've been great if I was aware of it earlier.. pygame.math.Vector2(pygame.mouse.get_pos()) // TILESIZE
-        (x, y) = pygame.mouse.get_rel()
-        self.cursor = (int(self.cursor[0] + x), int(self.cursor[1] + y))
-        self.cursorRect = pygame.Rect((self.cursor[0] - 200, self.cursor[1] - 200), (400, 400))
+        if not self.cursorEnabled:
+            # this would've been great if I was aware of it earlier.. pygame.math.Vector2(pygame.mouse.get_pos()) // TILESIZE
+            (x, y) = pygame.mouse.get_rel()
+            self.cursor = (int(self.cursor[0] + x), int(self.cursor[1] + y))
+            self.cursorRect = pygame.Rect((self.cursor[0] - 200, self.cursor[1] - 200), (400, 400))
 
         self.entityGroup.update()
 
