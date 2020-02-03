@@ -95,10 +95,10 @@ class Game:
         selected = None
         for character in self.entities:
             distance = character.distanceTo((self.cursorRect.centerx, self.cursorRect.centery))
-            if distance < lastVal and distance < 150 or lastVal == 0:
+            if distance < lastVal or lastVal == 0:
                 character.update()
                 selected = character
-                lastVal = character.distanceTo(self.cursor)
+                lastVal = character.distanceTo((self.cursorRect.centerx, self.cursorRect.centery))
 
         if selected:
             self.camera.update(selected)
