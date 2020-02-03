@@ -21,8 +21,8 @@ class CameraInstance:
 
     def update(self, target: Entity):
 
-        self.x += ((-target.rect.centerx + int(SCREEN_WIDTH / 2)) - self.x) * GameTime.fixedDeltaTime * 0.75
-        self.y += ((-target.rect.centery + int(SCREEN_HEIGHT / 2)) - self.y) * GameTime.fixedDeltaTime * 0.75
+        self.x += ((-target.rect.centerx + int(SCREEN_WIDTH / 2)) - self.x) * GameTime.fixedDeltaTime
+        self.y += ((-target.rect.centery + int(SCREEN_HEIGHT / 2)) - self.y) * GameTime.fixedDeltaTime
 
         #  Make sure we're within map boundaries
         self.x = min(0, self.x)

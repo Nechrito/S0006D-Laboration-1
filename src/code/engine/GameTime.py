@@ -37,8 +37,8 @@ class GameTime:
 
     @classmethod
     def timeElapsed(cls):
-        increment = datetime.timedelta(milliseconds=cls.totalTicks)
-        return (cls.startDate + increment).strftime("%m-%d %H:%M")  # "%Y-%m-%d %H:%M:%S"
+        increment = datetime.timedelta(milliseconds=cls.totalTicks * cls.scale)
+        return (cls.startDate + increment).strftime("%d/%m-%y %H:%M")  # "%Y-%m-%d %H:%M:%S"
 
     @classmethod
     def minutesToMilliseconds(cls, minute):

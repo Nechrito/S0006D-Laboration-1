@@ -1,19 +1,28 @@
 import sys
-
 import pygame
 import pygame.freetype
+from os import path
 
-from ...Settings import *
-from .Entity import Entity
-from .Camera import CameraInstance
-from .GameTime import GameTime
-from .MapLoader import Map
-from ..ai.behaviour.states.CollectMoney import CollectMoney
+from src.Settings import *
+from src.code.engine.Entity import Entity
+from src.code.Camera import CameraInstance
+from src.code.engine.GameTime import GameTime
+from src.code.engine.MapLoader import Map
+from src.code.ai.behaviour.states.CollectMoney import CollectMoney
 from src.code.ai.behaviour.Global import Global
-from ..ai.behaviour.states.Hangout import Hangout
-from ..ai.behaviour.states.Purchase import Purchase
-from ..environment.AllBuildings import getClub, getDrink, getLTU, getHangout, getHotel, getStackHQ, getStore, getResturant
-from .Renderer import Renderer
+from src.code.ai.behaviour.states.Hangout import Hangout
+from src.code.ai.behaviour.states.Purchase import Purchase
+from src.code.environment.AllBuildings import getClub, getDrink, getLTU, getHangout, getHotel, getStackHQ, getStore, getResturant
+from src.code.engine.Renderer import Renderer
+
+
+def getRealFilePath(fileName):
+    if getattr(sys, 'frozen', False):
+        systemDir = path.dirname(sys.executable)
+        return path.join(systemDir, "data/" + fileName)
+
+    directory = path.dirname(__file__)
+    return path.join(directory, "resources/" + fileName)
 
 
 class Game:
@@ -32,7 +41,7 @@ class Game:
 
         self.renderer = Renderer(self.surface)
 
-        self.map = Map(path.join(MapPath, 'environment.tmx'))
+        self.map = Map(getRealFilePath("map/environment.tmx"))
         self.mapImg = self.map.create()
         self.mapRect = self.mapImg.get_rect()
 
@@ -53,8 +62,8 @@ class Game:
         self.buildings = [getClub(), getDrink(), getResturant(), getStore(),
                           getStackHQ(), getHotel(), getHangout(), getLTU()]
 
-        sensei = pygame.image.load(path.join(ImagePath, 'sensei.png'))
-        hatguy = pygame.image.load(path.join(ImagePath, 'hat-guy.png'))
+        sensei = pygame.image.load(getRealFilePath('img/sensei.png'))
+        hatguy = pygame.image.load(getRealFilePath('img/hat-guy.png'))
 
         self.entityGroup = pygame.sprite.Group()
         self.characterAlex = Entity("Alex", Hangout(), Global(), self.entityGroup, 495, 405, sensei)
@@ -106,22 +115,21 @@ class Game:
 
         for char in self.entities:
             (x, y) = (char.position[0], char.position[1] + self.camera.y - TILESIZE - 5)
-            self.renderer.renderRect((46, 14), (x - 23, y - 7), (0, 0, 0), 130)
-            self.renderer.renderText(char.name, (x, y), 20)
+            self.renderer.renderRect((60, 18), (x - 30, y - 9), (0, 0, 0), 170)
+            self.renderer.renderText(char.name, (x, y), 24)
 
         for building in self.buildings:
-            self.renderer.renderText(building.name,
-                                     (building.position[0], building.position[1] + self.camera.y - TILESIZE * 4), 32)
+            self.renderer.renderText(building.name, (building.position[0], building.position[1] + self.camera.y - TILESIZE * 5), 38)
 
-        self.drawText()
+        self.drawEntitiesInfo()
 
         if not self.paused:
-            pygame.display.set_caption(TITLE + " | Speed: " + str(GameTime.scale) + " | Clock: " + GameTime.timeElapsed() + " | FPS " + "{:.0f}".format(self.clock.get_fps()))
+            pygame.display.set_caption(TITLE + " | Speed: " + str(GameTime.scale) + " | Date: " + GameTime.timeElapsed() + " | FPS " + "{:.0f}".format(self.clock.get_fps()))
 
         self.clock.tick(FPS)
         pygame.display.update()
 
-    def drawText(self):
+    def drawEntitiesInfo(self):
 
         count = 0
         for i in range(len(self.entities)):

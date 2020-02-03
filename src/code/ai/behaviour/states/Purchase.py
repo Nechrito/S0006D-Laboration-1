@@ -11,7 +11,7 @@ from ...messaging.Message import Message
 class Purchase(IState):
 
     def __init__(self):
-        alternatives = ["Shovel", "Pair of glasses", "Banana", "Skateboard"]
+        alternatives = ["Shovel", "Pair of glasses", "Banana", "Skateboard", "Teddy bear", "Programming Game AI by Example, Mat Buckland"]
         selection = random.randrange(0, len(alternatives))
         self.item = alternatives[selection]
         self.startTime = GameTime.ticks

@@ -1,7 +1,7 @@
 import sys
 import pygame
 
-from src.code.engine.Game import Game
+from src.Game import Game
 from src.code.engine.GameTime import GameTime
 
 # Only executes the main method if this module is executed as the main script
@@ -30,17 +30,17 @@ if __name__ == "__main__":
             # Pause game
             if event.type == pygame.KEYUP and event.key == pygame.K_LCTRL:
                 if instance.paused:
-                    GameTime.setScale(timeScaleCached)
+                    GameTime.setScale(timeScaleActive)
                 else:
                     GameTime.setScale(0.00001)
 
                 instance.paused = not instance.paused
 
             # Speed up
-            if event.type == pygame.KEYUP and event.key == pygame.K_LSHIFT:
+            if not instance.paused and event.type == pygame.KEYUP and event.key == pygame.K_LSHIFT:
                 timeScaleActive = GameTime.setScale(timeScaleActive * 2)
             # Slow down
-            if event.type == pygame.KEYUP and event.key == pygame.K_SPACE:
+            if not instance.paused and event.type == pygame.KEYUP and event.key == pygame.K_SPACE:
                 timeScaleActive = GameTime.setScale(timeScaleActive / 2)
 
         # Core
