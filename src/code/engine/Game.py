@@ -36,14 +36,12 @@ class Game:
         self.mapImg = self.map.create()
         self.mapRect = self.mapImg.get_rect()
 
+        GameTime.init()
+
         self.camera = CameraInstance(self.map.width, self.map.height)
 
         self.clock = pygame.time.Clock()
-        self.running = True
-        self.timeScaleCached = 1
-        self.timeScaleActive = self.timeScaleCached
-
-        GameTime.setScale(self.timeScaleActive)
+        self.paused = False
 
         self.cursorEnabled = False
         pygame.mouse.set_visible(self.cursorEnabled)
@@ -71,23 +69,7 @@ class Game:
 
     def update(self):
 
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT or event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
-                pygame.quit()
-                sys.exit()
-
-            if event.type == pygame.KEYUP and event.key == pygame.K_LALT:
-                self.cursorEnabled = not self.cursorEnabled
-                pygame.mouse.set_visible(self.cursorEnabled)
-                pygame.event.set_grab(not self.cursorEnabled)
-
-            if event.type == pygame.KEYUP and event.key == pygame.K_LSHIFT:
-                self.timeScaleActive = GameTime.setScale(self.timeScaleActive * 2)
-
-            if event.type == pygame.KEYUP and event.key == pygame.K_SPACE:
-                self.timeScaleActive = GameTime.setScale(self.timeScaleActive / 2)
-
-        GameTime.updateTicks()
+        GameTime.updateTicks(self.paused)
 
         if not self.cursorEnabled:
             # this would've been great if I was aware of it earlier.. pygame.math.Vector2(pygame.mouse.get_pos()) // TILESIZE
@@ -133,7 +115,9 @@ class Game:
 
         self.drawText()
 
-        pygame.display.set_caption(TITLE + " | Speed: " + str(GameTime.scale) + " | Clock: " + GameTime.timeElapsed() + " | FPS " + "{:.0f}".format(self.clock.get_fps()))
+        if not self.paused:
+            pygame.display.set_caption(TITLE + " | Speed: " + str(GameTime.scale) + " | Clock: " + GameTime.timeElapsed() + " | FPS " + "{:.0f}".format(self.clock.get_fps()))
+
         self.clock.tick(FPS)
         pygame.display.update()
 
@@ -148,7 +132,8 @@ class Game:
             if not self.cursorRect.collidepoint(relativePosition[0], relativePosition[1]):
                 continue
 
-            pygame.draw.line(self.surface, (220, 220, 220), (self.cursorRect.centerx + 5, self.cursorRect.centery + 5), relativePosition, 3)
+            if not self.cursorEnabled:
+                pygame.draw.line(self.surface, (220, 220, 220), (self.cursorRect.centerx + 5, self.cursorRect.centery + 5), relativePosition, 3)
 
             self.renderer.renderRect((150, 150), (count * 150, 50), (0, 0, 0), 160)
 
