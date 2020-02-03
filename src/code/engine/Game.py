@@ -42,6 +42,7 @@ class Game:
         self.running = True
         self.timeScaleCached = 1
         self.timeScaleActive = self.timeScaleCached
+
         GameTime.setScale(self.timeScaleActive)
 
         self.cursorEnabled = False
@@ -80,10 +81,11 @@ class Game:
                 pygame.mouse.set_visible(self.cursorEnabled)
                 pygame.event.set_grab(not self.cursorEnabled)
 
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
-                self.timeScaleActive = GameTime.setScale(self.timeScaleCached * 10)
-            elif event.type == pygame.KEYUP and event.key == pygame.K_SPACE:
-                self.timeScaleActive = GameTime.setScale(self.timeScaleCached * 0.1)
+            if event.type == pygame.KEYUP and event.key == pygame.K_LSHIFT:
+                self.timeScaleActive = GameTime.setScale(self.timeScaleActive * 2)
+
+            if event.type == pygame.KEYUP and event.key == pygame.K_SPACE:
+                self.timeScaleActive = GameTime.setScale(self.timeScaleActive / 2)
 
         GameTime.updateTicks()
 
@@ -131,7 +133,7 @@ class Game:
 
         self.drawText()
 
-        pygame.display.set_caption(TITLE + " | FPS " + "{:.0f}".format(self.clock.get_fps()))
+        pygame.display.set_caption(TITLE + " | Speed: " + str(GameTime.scale) + " | Clock: " + GameTime.timeElapsed() + " | FPS " + "{:.0f}".format(self.clock.get_fps()))
         self.clock.tick(FPS)
         pygame.display.update()
 

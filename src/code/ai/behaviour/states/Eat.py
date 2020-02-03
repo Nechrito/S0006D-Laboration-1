@@ -18,7 +18,7 @@ class Eat(IState):
             entity.moveTo(getResturant().position)
             return
 
-        if entity.hunger <= 5:
+        if entity.hunger <= 5 or entity.bank <= 2:
             from .CollectMoney import CollectMoney
             entity.change(CollectMoney())
         else:
