@@ -18,9 +18,8 @@ class Drink(IState):
             entity.moveTo(getDrink().position)
             return
 
-        if entity.thirst <= 8:
-            from .CollectMoney import CollectMoney
-            entity.change(CollectMoney())
+        if entity.thirst <= 5:
+            entity.revertState()
         else:
             entity.thirst -= 5 * GameTime.deltaTime
             entity.bank -= 0.30 * GameTime.deltaTime

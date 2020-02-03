@@ -3,13 +3,14 @@ from ....engine.GameTime import GameTime
 from ....environment.AllBuildings import getResturant
 from ...messaging.Message import Message
 
+
 class Eat(IState):
 
     def __repr__(self):
         return 'Eating'
 
     def enter(self, entity):
-        Message.sendConsole(entity, "Time for lunch!")
+        Message.sendConsole(entity, "Time to get myself a snack!")
 
     def execute(self, entity):
 
@@ -17,7 +18,7 @@ class Eat(IState):
             entity.moveTo(getResturant().position)
             return
 
-        if entity.hunger <= 10:
+        if entity.hunger <= 5:
             from .CollectMoney import CollectMoney
             entity.change(CollectMoney())
         else:

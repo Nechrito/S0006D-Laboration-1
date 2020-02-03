@@ -15,7 +15,7 @@ class Entity(pygame.sprite.Sprite):
 
         self.image = image
         self.name = name
-        self.position = [x + TILESIZE / 2, y + TILESIZE_Y / 2]
+        self.position = [x + TILESIZE / 2, y + TILESIZE / 2]
         self.length = 0
         self.limit = 0
         self.direction = [0, 0]
@@ -59,8 +59,9 @@ class Entity(pygame.sprite.Sprite):
         self.position[0] += self.direction[0] * GameTime.deltaTime * 30
         self.position[1] += self.direction[1] * GameTime.deltaTime * 30
 
-    def change(self, state):
+    def change(self, state, lock=False):
+        # self.stateMachine.setLockedState(lock)
         self.stateMachine.changeState(state)
 
     def revertState(self):
-        self.stateMachine.revertState()
+        self.stateMachine.revert()

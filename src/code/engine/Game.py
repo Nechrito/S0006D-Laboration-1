@@ -9,7 +9,7 @@ from .Camera import CameraInstance
 from .GameTime import GameTime
 from .MapLoader import Map
 from ..ai.behaviour.states.CollectMoney import CollectMoney
-from ..ai.behaviour.states.Global import Global
+from src.code.ai.behaviour.Global import Global
 from ..ai.behaviour.states.Hangout import Hangout
 from ..ai.behaviour.states.Purchase import Purchase
 from ..environment.AllBuildings import getClub, getDrink, getLTU, getHangout, getHotel, getStackHQ, getStore, getResturant
@@ -32,7 +32,7 @@ class Game:
 
         self.renderer = Renderer(self.surface)
 
-        self.map = Map(path.join(map_folder, 'environment.tmx'))
+        self.map = Map(path.join(MapPath, 'environment.tmx'))
         self.mapImg = self.map.create()
         self.mapRect = self.mapImg.get_rect()
 
@@ -40,21 +40,22 @@ class Game:
 
         self.clock = pygame.time.Clock()
         self.running = True
-        self.timeScaleCached = 10
+        self.timeScaleCached = 1
         self.timeScaleActive = self.timeScaleCached
+        GameTime.setScale(self.timeScaleActive)
 
         self.cursorEnabled = False
         pygame.mouse.set_visible(self.cursorEnabled)
         pygame.event.set_grab(not self.cursorEnabled)
 
-        self.cursor = (WIDTH / 2, HEIGHT / 2)
+        self.cursor = (SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
         self.cursorRect = pygame.Rect(self.cursor, (10, 10))
 
         self.buildings = [getClub(), getDrink(), getResturant(), getStore(),
                           getStackHQ(), getHotel(), getHangout(), getLTU()]
 
-        sensei = pygame.image.load(path.join(img_folder, 'sensei.png'))
-        hatguy = pygame.image.load(path.join(img_folder, 'hat-guy.png'))
+        sensei = pygame.image.load(path.join(ImagePath, 'sensei.png'))
+        hatguy = pygame.image.load(path.join(ImagePath, 'hat-guy.png'))
 
         self.entityGroup = pygame.sprite.Group()
         self.characterAlex = Entity("Alex", Hangout(), Global(), self.entityGroup, 495, 405, sensei)
@@ -62,14 +63,12 @@ class Game:
         self.characterJohn = Entity("John", Purchase(), Global(), self.entityGroup, 700, 380, sensei)
         self.characterJames = Entity("James", CollectMoney(), Global(), self.entityGroup, 940, 400, hatguy)
 
-        self.characters = [self.characterAlex, self.characterWendy, self.characterJohn, self.characterJames]
+        self.entities = [self.characterAlex, self.characterWendy, self.characterJohn, self.characterJames]
 
-        for char in self.characters:
+        for char in self.entities:
             self.entityGroup.add(char)
 
     def update(self):
-
-        # pressed = pygame.key.get_pressed()
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT or event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
@@ -82,11 +81,11 @@ class Game:
                 pygame.event.set_grab(not self.cursorEnabled)
 
             if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
-                self.timeScaleActive = self.timeScaleCached * 0.1
+                self.timeScaleActive = GameTime.setScale(self.timeScaleCached * 10)
             elif event.type == pygame.KEYUP and event.key == pygame.K_SPACE:
-                self.timeScaleActive = self.timeScaleCached
+                self.timeScaleActive = GameTime.setScale(self.timeScaleCached * 0.1)
 
-        GameTime.updateTicks(self.timeScaleActive)
+        GameTime.updateTicks()
 
         if not self.cursorEnabled:
             # this would've been great if I was aware of it earlier.. pygame.math.Vector2(pygame.mouse.get_pos()) // TILESIZE
@@ -98,9 +97,9 @@ class Game:
 
         lastVal = 0
         selected = None
-        for character in self.characters:
+        for character in self.entities:
             distance = character.distanceTo((self.cursorRect.centerx, self.cursorRect.centery))
-            if distance < lastVal and distance < 400 or lastVal == 0:
+            if distance < lastVal and distance < 150 or lastVal == 0:
                 character.update()
                 selected = character
                 lastVal = character.distanceTo(self.cursor)
@@ -112,15 +111,16 @@ class Game:
 
         self.renderer.clear(self.mapImg, self.camera.moveRect(self.mapRect))
 
-        self.renderer.renderRect((self.cursorRect.width, self.cursorRect.height),
-                                 (self.cursorRect.left, self.cursorRect.top), (37, 37, 38), 80)
+        if not self.cursorEnabled:
+            self.renderer.renderRect((self.cursorRect.width, self.cursorRect.height),
+                                     (self.cursorRect.left, self.cursorRect.top), (37, 37, 38), 80)
 
-        self.renderer.renderRect((10, 10), (self.cursorRect.centerx, self.cursorRect.centery), (37, 37, 38), 200)
+            self.renderer.renderRect((10, 10), (self.cursorRect.centerx, self.cursorRect.centery), (37, 37, 38), 200)
 
         for sprite in self.entityGroup:
             self.surface.blit(sprite.image, self.camera.moveSprite(sprite))
 
-        for char in self.characters:
+        for char in self.entities:
             (x, y) = (char.position[0], char.position[1] + self.camera.y - TILESIZE - 5)
             self.renderer.renderRect((46, 14), (x - 23, y - 7), (0, 0, 0), 130)
             self.renderer.renderText(char.name, (x, y), 20)
@@ -137,26 +137,24 @@ class Game:
 
     def drawText(self):
 
-        renderCount = 0
-        for i in range(len(self.characters)):
+        count = 0
+        for i in range(len(self.entities)):
 
-            character = self.characters[i]
-            relativePosition = (
-            character.position[0] + self.camera.x, character.position[1] + self.camera.y + TILESIZE_Y)
+            entity = self.entities[i]
+            relativePosition = (entity.position[0] + self.camera.x, entity.position[1] + self.camera.y + TILESIZE)
 
             if not self.cursorRect.collidepoint(relativePosition[0], relativePosition[1]):
                 continue
 
-            pygame.draw.line(self.surface, (220, 220, 220), (self.cursorRect.centerx, self.cursorRect.centery),
-                             relativePosition)
+            pygame.draw.line(self.surface, (220, 220, 220), (self.cursorRect.centerx + 5, self.cursorRect.centery + 5), relativePosition, 3)
 
-            self.renderer.renderRect((150, 150), (renderCount * 150, 50), (0, 0, 0), 160)
+            self.renderer.renderRect((150, 150), (count * 150, 50), (0, 0, 0), 160)
 
-            self.renderer.append(character.name + " (" + str(character.stateMachine.currentState) + ")")
-            self.renderer.append("Fatigue: {0}%".format("{:.0f}".format(float(character.fatigue))))
-            self.renderer.append("Hunger: {0}%".format("{:.0f}".format(float(character.hunger))))
-            self.renderer.append("Thirst: {0}%".format("{:.0f}".format(float(character.thirst))))
-            self.renderer.append("Bank: {0}$".format("{:.0f}".format(float(character.bank))))
-            self.renderer.renderTexts((25 + WIDTH * 0.05 + 160 * renderCount, HEIGHT * 0.10), 22, (255, 255, 255))
+            self.renderer.append(entity.name + " (" + str(entity.stateMachine.currentState) + ")")
+            self.renderer.append("Fatigue: {0}%".format("{:.0f}".format(float(entity.fatigue))))
+            self.renderer.append("Hunger: {0}%".format("{:.0f}".format(float(entity.hunger))))
+            self.renderer.append("Thirst: {0}%".format("{:.0f}".format(float(entity.thirst))))
+            self.renderer.append("Bank: {0}$".format("{:.0f}".format(float(entity.bank))))
+            self.renderer.renderTexts((25 + SCREEN_WIDTH * 0.05 + 150 * count, SCREEN_HEIGHT * 0.10), 22, (255, 255, 255))
 
-            renderCount += 1
+            count += 1

@@ -11,16 +11,20 @@ class StateMachine:
     def update(self):
         if not self.locked:
             self.currentState.execute(self.owner)
+
         self.globalState.execute(self.owner)
 
-    def toggleLockState(self, value):
+    def setLockedState(self, value):
         self.locked = value
 
-    def revertState(self):
+    def revert(self):
         if self.previousState is not None:
             self.changeState(self.previousState)
 
     def changeState(self, nextState):
+
+        if self.locked:
+            return
 
         self.previousState = self.currentState
 

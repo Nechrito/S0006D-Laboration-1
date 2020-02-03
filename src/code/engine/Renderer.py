@@ -24,7 +24,7 @@ class Renderer:
         self.surface.blit(rect, pos)
 
     def renderText(self, text: str, position, size, color=(255, 255, 255)):
-        font = pygame.freetype.Font(FONT_REGULAR, int(HEIGHT * size / WIDTH))  # Scaled with resolution
+        font = pygame.freetype.Font(FONT_REGULAR, int(SCREEN_HEIGHT * size / SCREEN_WIDTH))  # Scaled with resolution
         fontRendered, fontRect = font.render(text, color)
         self.surface.blit(fontRendered, (position[0] - fontRect[2] / 2, position[1] - fontRect[3] / 2))
 
@@ -44,7 +44,7 @@ class Renderer:
         self.texts.append(msg)
 
     def showGrid(self):
-        for x in range(0, WIDTH, TILESIZE):
-            pygame.draw.line(self.surface, LIGHTGREY, (x, 0), (x, HEIGHT))
-        for y in range(0, HEIGHT, TILESIZE_Y):
-            pygame.draw.line(self.surface, LIGHTGREY, (0, y), (WIDTH, y))
+        for x in range(0, SCREEN_WIDTH, TILESIZE):
+            pygame.draw.line(self.surface, LIGHTGREY, (x, 0), (x, SCREEN_HEIGHT))
+        for y in range(0, SCREEN_HEIGHT, TILESIZE_Y):
+            pygame.draw.line(self.surface, LIGHTGREY, (0, y), (SCREEN_WIDTH, y))

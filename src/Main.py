@@ -11,7 +11,5 @@ if __name__ == "__main__":
         instance.update()
         instance.draw()
 
-        if pygame.key.get_focused():
-            pygame.time.delay(1)
-        else:
-            pygame.time.delay(100)
+        if not pygame.key.get_focused():
+            pygame.time.wait(100)

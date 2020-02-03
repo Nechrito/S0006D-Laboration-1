@@ -17,12 +17,12 @@ class Hangout(IState):
             entity.moveTo(getHangout().position)
             return
 
-        if entity.hunger > 60:
-            from .Eat import Eat
-            entity.change(Eat())
+        if entity.fatigue > 80 or entity.bank <= 5:
+            from .Sleep import Sleep
+            entity.change(Sleep())
         else:
-            entity.bank -= 3 * GameTime.deltaTime
-            entity.fatigue += 2 * GameTime.deltaTime
+            entity.bank -= 1.5 * GameTime.deltaTime
+            entity.fatigue += 1 * GameTime.deltaTime
 
     def exit(self, entity):
         pass

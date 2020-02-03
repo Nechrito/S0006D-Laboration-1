@@ -3,10 +3,11 @@ from src.code.engine.GameTime import GameTime
 from src.code.environment.AllBuildings import getHotel
 from ...messaging.Message import Message
 
+
 class Sleep(IState):
 
     def __repr__(self):
-        return 'Sleeping'
+        return 'Resting'
 
     def enter(self, entity):
         Message.sendConsole(entity, "ZzzZz...")
@@ -17,11 +18,11 @@ class Sleep(IState):
             entity.moveTo(getHotel().position)
             return
 
-        if entity.fatigue <= 10:
+        if entity.fatigue <= 5:
             from .Eat import Eat
             entity.change(Eat())
         else:
-            entity.fatigue -= 7 * GameTime.deltaTime
+            entity.fatigue -= 4 * GameTime.deltaTime
 
     def exit(self, entity):
         pass

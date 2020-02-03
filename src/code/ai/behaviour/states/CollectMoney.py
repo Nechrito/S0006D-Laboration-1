@@ -13,8 +13,9 @@ class CollectMoney(IState):
 
     def __init__(self):
         alternatives: List[Building] = [getLTU(), getClub(), getStackHQ()]
-        randValue = random.randrange(0, len(alternatives))
-        self.workplace = alternatives[randValue]
+        selection = random.randrange(0, len(alternatives))
+        self.workplace = alternatives[selection]
+        self.startTime = GameTime.ticks
 
     def __repr__(self):
         return 'Working'
@@ -28,14 +29,10 @@ class CollectMoney(IState):
             entity.moveTo(self.workplace.randomized)
             return
 
-        if entity.fatigue >= 80:
-            if entity.bank > 90:
-                from .Purchase import Purchase
-                entity.change(Purchase())
-
-            elif entity.bank > 100:
-                from .Hangout import Hangout
-                entity.change(Hangout())
+        # Check currency after a fixed delay
+        if GameTime.ticks - self.startTime >= GameTime.minutesToMilliseconds(0.20):
+            from .Purchase import Purchase
+            entity.change(Purchase())
 
         entity.fatigue += 2 * GameTime.deltaTime
         entity.bank += 3 * GameTime.deltaTime

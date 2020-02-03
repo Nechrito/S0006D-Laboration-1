@@ -7,14 +7,6 @@ class Map:
         self.instance = pytmx.load_pygame(filename, pixelalpha=True)
         self.width = self.instance.width * self.instance.tilewidth
         self.height = self.instance.height * self.instance.tileheight
-        self.collisionLayer = []
-
-        for obj in self.instance.get_layer_by_name("Collision"):
-            properties = obj.__dict__
-            if properties['type'] == 'blocker':
-                x = properties['x']
-                y = properties['y']
-                self.collisionLayer.append((x, y))
 
     def render(self, surface):
         tileImg = self.instance.get_tile_image_by_gid  # Fetches the image represented by the ID

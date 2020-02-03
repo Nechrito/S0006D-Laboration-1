@@ -26,7 +26,7 @@ def getStore():
 
 
 def getHotel():
-    return Building((735, 603), "Hotel")
+    return Building((735, 603), "Home")
 
 
 def getHangout():
