@@ -19,7 +19,7 @@ class Hangout(IState):
 
         if entity.fatigue > 80 or entity.bank <= 5:
             from .Sleep import Sleep
-            entity.change(Sleep())
+            entity.setState(Sleep())
         else:
             entity.bank -= 1.5 * GameTime.deltaTime
             entity.fatigue += 1 * GameTime.deltaTime

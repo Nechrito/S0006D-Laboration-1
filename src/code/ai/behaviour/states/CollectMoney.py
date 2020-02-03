@@ -32,7 +32,7 @@ class CollectMoney(IState):
         # Check currency after a fixed delay
         if GameTime.ticks - self.startTime >= GameTime.minutesToMilliseconds(0.20):
             from .Purchase import Purchase
-            entity.change(Purchase())
+            entity.setState(Purchase())
 
         entity.fatigue += 2 * GameTime.deltaTime
         entity.bank += 3 * GameTime.deltaTime

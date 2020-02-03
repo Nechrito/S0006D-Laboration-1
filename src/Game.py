@@ -78,6 +78,9 @@ class Game:
 
     def update(self):
 
+        if not self.paused:
+            pygame.display.set_caption(TITLE + " | Speed: " + str(GameTime.scale) + " | FPS " + "{:.0f}".format(self.clock.get_fps()) + " | Date: " + GameTime.timeElapsed())
+
         GameTime.updateTicks(self.paused)
 
         if not self.cursorEnabled:
@@ -123,11 +126,9 @@ class Game:
 
         self.drawEntitiesInfo()
 
-        if not self.paused:
-            pygame.display.set_caption(TITLE + " | Speed: " + str(GameTime.scale) + " | FPS " + "{:.0f}".format(self.clock.get_fps()) + " | Date: " + GameTime.timeElapsed())
+
 
         self.clock.tick(FPS)
-        pygame.display.update()
 
     def drawEntitiesInfo(self):
 

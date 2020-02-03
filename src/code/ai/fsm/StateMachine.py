@@ -19,9 +19,9 @@ class StateMachine:
 
     def revert(self):
         if self.previousState is not None:
-            self.changeState(self.previousState)
+            self.change(self.previousState)
 
-    def changeState(self, nextState):
+    def change(self, nextState):
 
         if self.locked:
             return

@@ -27,7 +27,7 @@ class GameTime:
     def updateTicks(cls, isPaused):
         cls.ticks = pygame.time.get_ticks()
 
-        if not isPaused:
+        if not isPaused:  # would've been better with an accurate timer rather than each tick
             cls.totalTicks += cls.ticks
 
         cls.deltaTime = cls.fixedDeltaTime = ((cls.ticks - cls.lastFrame) / 1000.0)

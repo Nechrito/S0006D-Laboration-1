@@ -11,7 +11,6 @@ class Renderer:
 
     def clear(self, mapImg, mapRect):
         pygame.display.update()
-        #screen.fill(DARKGREY)
         self.surface.blit(mapImg, mapRect)
 
     def renderCircle(self, position, radius, color=(255, 255, 255)):
@@ -42,9 +41,3 @@ class Renderer:
 
     def append(self, msg):
         self.texts.append(msg)
-
-    def showGrid(self):
-        for x in range(0, SCREEN_WIDTH, TILESIZE):
-            pygame.draw.line(self.surface, LIGHTGREY, (x, 0), (x, SCREEN_HEIGHT))
-        for y in range(0, SCREEN_HEIGHT, TILESIZE_Y):
-            pygame.draw.line(self.surface, LIGHTGREY, (0, y), (SCREEN_WIDTH, y))

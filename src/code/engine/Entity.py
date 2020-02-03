@@ -59,9 +59,9 @@ class Entity(pygame.sprite.Sprite):
         self.position[0] += self.direction[0] * GameTime.deltaTime * 30
         self.position[1] += self.direction[1] * GameTime.deltaTime * 30
 
-    def change(self, state, lock=False):
+    def setState(self, state, lock=False):
         # self.stateMachine.setLockedState(lock)
-        self.stateMachine.changeState(state)
+        self.stateMachine.change(state)
 
     def revertState(self):
         self.stateMachine.revert()
