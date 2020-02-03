@@ -28,7 +28,7 @@ if __name__ == "__main__":
                 pygame.event.set_grab(not instance.cursorEnabled)
 
             # Pause game
-            if event.type == pygame.KEYUP and event.key == pygame.K_LCTRL:
+            if event.type == pygame.KEYUP and event.key == pygame.K_SPACE:
                 if instance.paused:
                     GameTime.setScale(timeScaleActive)
                 else:
@@ -40,7 +40,7 @@ if __name__ == "__main__":
             if not instance.paused and event.type == pygame.KEYUP and event.key == pygame.K_LSHIFT:
                 timeScaleActive = GameTime.setScale(timeScaleActive * 2)
             # Slow down
-            if not instance.paused and event.type == pygame.KEYUP and event.key == pygame.K_SPACE:
+            if not instance.paused and event.type == pygame.KEYUP and event.key == pygame.K_LCTRL:
                 timeScaleActive = GameTime.setScale(timeScaleActive / 2)
 
         # Core
