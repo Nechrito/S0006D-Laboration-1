@@ -8,8 +8,8 @@ FPS = 144
 TILESIZE = 16
 
 # Resource files direct path
-ICON_PATH = "resources/icon/controller-icon64.png"
-FONT_BLACK = "resources/fonts/Roboto-Black.ttf"
-FONT_BOLD = "resources/fonts/Roboto-Bold.ttf"
-FONT_REGULAR = "resources/fonts/Roboto-Regular.ttf"
+ICON_PATH = "icon/controller-icon64.png"
+FONT_BLACK = "fonts/Roboto-Black.ttf"
+FONT_BOLD = "fonts/Roboto-Bold.ttf"
+FONT_REGULAR = "fonts/Roboto-Regular.ttf"
 

@@ -17,8 +17,14 @@ from src.code.engine.Renderer import Renderer
 
 
 def getRealFilePath(fileName):
-    directory = path.dirname(__file__)
-    return path.join(directory, "resources/" + fileName)
+    if getattr(sys, 'frozen', False):
+        directory = path.dirname(sys.executable)
+        folder = "src/resources/"
+    else:
+        directory = path.dirname(__file__)
+        folder = "resources/"
+
+    return path.join(directory, folder + fileName)
 
 
 class Game:
@@ -28,10 +34,12 @@ class Game:
         pygame.mixer.init()
         pygame.freetype.init()
 
-        logo = pygame.image.load(ICON_PATH)
+        logo = pygame.image.load(getRealFilePath(ICON_PATH))
         pygame.display.set_icon(logo)
         pygame.display.set_caption(TITLE)
         self.surface = pygame.display.set_mode(RESOLUTION)
+        self.font = pygame.freetype.Font(getRealFilePath(FONT_REGULAR), int(SCREEN_HEIGHT * 22 / SCREEN_WIDTH))
+        self.fontBold = pygame.freetype.Font(getRealFilePath(FONT_BOLD), int(SCREEN_HEIGHT * 38 / SCREEN_WIDTH))
 
     def load(self):
 
@@ -115,14 +123,12 @@ class Game:
         for char in self.entities:
             (x, y) = (char.position[0], char.position[1] + self.camera.y - TILESIZE - 5)
             self.renderer.renderRect((60, 18), (x - 30, y - 9), (0, 0, 0), 170)
-            self.renderer.renderText(char.name, (x, y), 24)
+            self.renderer.renderText(char.name, (x, y), self.font)
 
         for building in self.buildings:
-            self.renderer.renderText(building.name, (building.position[0], building.position[1] + self.camera.y - TILESIZE * 5), 38)
+            self.renderer.renderText(building.name, (building.position[0], building.position[1] + self.camera.y - TILESIZE * 5), self.fontBold)
 
         self.drawEntitiesInfo()
-
-
 
         self.clock.tick(FPS)
 
@@ -147,6 +153,6 @@ class Game:
             self.renderer.append("Hunger: {0}%".format("{:.0f}".format(float(entity.hunger))))
             self.renderer.append("Thirst: {0}%".format("{:.0f}".format(float(entity.thirst))))
             self.renderer.append("Bank: {0}$".format("{:.0f}".format(float(entity.bank))))
-            self.renderer.renderTexts((25 + SCREEN_WIDTH * 0.05 + 150 * count, SCREEN_HEIGHT * 0.10), 22, (255, 255, 255))
+            self.renderer.renderTexts((25 + SCREEN_WIDTH * 0.05 + 150 * count, SCREEN_HEIGHT * 0.10), self.font, (255, 255, 255))
 
             count += 1
