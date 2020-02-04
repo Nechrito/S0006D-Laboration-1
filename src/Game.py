@@ -17,10 +17,6 @@ from src.code.engine.Renderer import Renderer
 
 
 def getRealFilePath(fileName):
-    if getattr(sys, 'frozen', False):
-        systemDir = path.dirname(sys.executable)
-        return path.join(systemDir, "data/" + fileName)
-
     directory = path.dirname(__file__)
     return path.join(directory, "resources/" + fileName)
 

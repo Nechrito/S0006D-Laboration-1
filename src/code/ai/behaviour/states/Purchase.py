@@ -1,7 +1,5 @@
 import random
 
-import pygame
-
 from src.code.ai.behaviour.IState import IState
 from src.code.engine.GameTime import GameTime
 from src.code.environment.AllBuildings import getStore
