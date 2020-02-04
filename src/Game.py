@@ -38,7 +38,7 @@ class Game:
         pygame.display.set_icon(logo)
         pygame.display.set_caption(TITLE)
         self.surface = pygame.display.set_mode(RESOLUTION)
-        self.font = pygame.freetype.Font(getRealFilePath(FONT_REGULAR), int(SCREEN_HEIGHT * 22 / SCREEN_WIDTH))
+        self.font = pygame.freetype.Font(getRealFilePath(FONT_BOLD), int(SCREEN_HEIGHT * 24 / SCREEN_WIDTH))
         self.fontBold = pygame.freetype.Font(getRealFilePath(FONT_BOLD), int(SCREEN_HEIGHT * 38 / SCREEN_WIDTH))
 
     def load(self):
@@ -83,9 +83,9 @@ class Game:
     def update(self):
 
         if not self.paused:
-            pygame.display.set_caption(TITLE + " | Speed: " + str(GameTime.scale) + " | FPS " + "{:.0f}".format(self.clock.get_fps()) + " | Date: " + GameTime.timeElapsed())
+            pygame.display.set_caption(TITLE + " | Speed: " + str(GameTime.timeScale) + " | FPS " + "{:.0f}".format(self.clock.get_fps()) + " | Date: " + GameTime.timeElapsed())
 
-        GameTime.updateTicks(self.paused)
+        GameTime.updateTicks()
 
         if not self.cursorEnabled:
             # this would've been great if I was aware of it earlier.. pygame.math.Vector2(pygame.mouse.get_pos()) // TILESIZE

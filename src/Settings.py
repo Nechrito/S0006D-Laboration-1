@@ -4,7 +4,7 @@ TITLE = "S0006D - Laboration 1 - Philip Lindh"
 SCREEN_WIDTH = 1024
 SCREEN_HEIGHT = 768
 RESOLUTION = [SCREEN_WIDTH, SCREEN_HEIGHT]
-FPS = 144
+FPS = 200
 TILESIZE = 16
 
 # Resource files direct path
