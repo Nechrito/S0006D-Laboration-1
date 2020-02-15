@@ -1,6 +1,5 @@
 import pygame
 import pygame.freetype
-from src.Settings import *
 
 
 class Renderer:

@@ -1,6 +1,6 @@
-import sys
 import pygame
 import pygame.freetype
+
 from os import path
 
 from src.Settings import *
@@ -16,36 +16,31 @@ from src.code.environment.AllBuildings import getClub, getDrink, getLTU, getHang
 from src.code.engine.Renderer import Renderer
 
 
-def getRealFilePath(fileName):
-    if getattr(sys, 'frozen', False):
-        directory = path.dirname(sys.executable)
-        folder = "src/resources/"
-    else:
-        directory = path.dirname(__file__)
-        folder = "resources/"
-
-    return path.join(directory, folder + fileName)
-
-
 class Game:
 
-    def __init__(self):
+    def getRealFilePath(self, fileName):
+        return path.join(self.directory, self.folder + fileName)
+
+    def __init__(self, directory, folder):
+        self.directory = directory
+        self.folder = folder
+
         pygame.init()
         pygame.mixer.init()
         pygame.freetype.init()
 
-        logo = pygame.image.load(getRealFilePath(ICON_PATH))
+        logo = pygame.image.load(self.getRealFilePath(ICON_PATH))
         pygame.display.set_icon(logo)
         pygame.display.set_caption(TITLE)
         self.surface = pygame.display.set_mode(RESOLUTION)
-        self.font = pygame.freetype.Font(getRealFilePath(FONT_BOLD), int(SCREEN_HEIGHT * 24 / SCREEN_WIDTH))
-        self.fontBold = pygame.freetype.Font(getRealFilePath(FONT_BOLD), int(SCREEN_HEIGHT * 38 / SCREEN_WIDTH))
+        self.font = pygame.freetype.Font(self.getRealFilePath(FONT_BOLD), int(SCREEN_HEIGHT * 24 / SCREEN_WIDTH))
+        self.fontBold = pygame.freetype.Font(self.getRealFilePath(FONT_BOLD), int(SCREEN_HEIGHT * 38 / SCREEN_WIDTH))
 
     def load(self):
 
         self.renderer = Renderer(self.surface)
 
-        self.map = Map(getRealFilePath("map/environment.tmx"))
+        self.map = Map(self.getRealFilePath("map/environment.tmx"))
         self.mapImg = self.map.create()
         self.mapRect = self.mapImg.get_rect()
 
@@ -66,8 +61,8 @@ class Game:
         self.buildings = [getClub(), getDrink(), getResturant(), getStore(),
                           getStackHQ(), getHotel(), getHangout(), getLTU()]
 
-        sensei = pygame.image.load(getRealFilePath('img/sensei.png'))
-        hatguy = pygame.image.load(getRealFilePath('img/hat-guy.png'))
+        sensei = pygame.image.load(self.getRealFilePath('img/sensei.png'))
+        hatguy = pygame.image.load(self.getRealFilePath('img/hat-guy.png'))
 
         self.entityGroup = pygame.sprite.Group()
         self.characterAlex = Entity("Alex", Hangout(), Global(), self.entityGroup, 495, 405, sensei)

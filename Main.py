@@ -1,4 +1,5 @@
 import sys
+from os import path
 import pygame
 
 from src.Game import Game
@@ -7,7 +8,13 @@ from src.code.engine.GameTime import GameTime
 # Only executes the main method if this module is executed as the main script
 if __name__ == "__main__":
 
-    instance = Game()
+    folder = "resources/"
+    if getattr(sys, 'frozen', False):
+        directory = path.dirname(sys.executable)
+    else:
+        directory = path.dirname(__file__)
+
+    instance = Game(directory, folder)
     instance.load()
 
     timeScaleCached = 1

@@ -1,4 +1,6 @@
-# S0006D-Laboration-1
+# S0006D-Laboration-1 - Finite State Machine
+
+![](showcase.gif)
 
 CONTROLS
 * Esc = Exit
